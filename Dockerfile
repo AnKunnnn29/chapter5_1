@@ -1,14 +1,23 @@
-# Sử dụng Tomcat 10 (Jakarta EE 9+)
-FROM tomcat:10.1-jdk17
+# ---- Stage 1: Build WAR với Maven ----
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /app
 
-# Xóa webapps mặc định để tránh ROOT/index.jsp default của Tomcat
-RUN rm -rf /usr/local/tomcat/webapps/*
+COPY pom.xml .
+COPY src ./src
 
-# Copy WAR của bạn và đổi tên thành ROOT.war
-COPY target/mavenproject1-1.0-SNAPSHOT.war /usr/local/tomcat/webapps/ROOT.war
+# Build WAR (bỏ qua test cho nhanh)
+RUN mvn -B -DskipTests clean package
 
-# Mở port 8080
+# ---- Stage 2: Runtime với Tomcat 11 ----
+FROM tomcat:11-jdk17
+WORKDIR /usr/local/tomcat
+
+# Xóa webapps mặc định (ROOT, examples, docs...)
+RUN rm -rf webapps/*
+
+# Copy WAR đã build thành ROOT.war (để app chạy ở "/")
+COPY --from=build /app/target/ltweb6-fixed-*.war webapps/ROOT.war
+
 EXPOSE 8080
 
-# Chạy Tomcat
 CMD ["catalina.sh", "run"]
