@@ -1,16 +1,13 @@
-<%@page contentType="text/html" pageEncoding="utf-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Murach's Java Servlets and JSP</title>
-    <link rel="stylesheet" href="styles/main.css" type="text/css"/>
+    <meta charset="UTF-8">
+    <title>Page Not Found</title>
 </head>
 <body>
-
-<h1>404 Error</h1>
-<p>The server was not able to find the file you requested.</p>
-<p>To continue, click the Back button.</p>
-
+    <h1>404 - Page Not Found</h1>
+    <p>Sorry, the page you are looking for does not exist.</p>
+    <a href="index.jsp">Return to Home</a>
 </body>
 </html>
